@@ -37,7 +37,7 @@ AllReacts is a browser extension that lets you react to Facebook Stories with an
   <img src="screenshot/shot-2.png" width="400"/>
 </div>
 
-3. Enable/Disable 'Hide the seen status on Facebook Stories'.
+2. Enable/Disable 'Hide the seen status on Facebook Stories'.
 
 ## Copyright
 
