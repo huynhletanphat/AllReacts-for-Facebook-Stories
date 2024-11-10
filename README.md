@@ -27,7 +27,8 @@ AllReacts is a browser extension that lets you react to Facebook Stories with an
 <div align="center">
   <img src="screenshot/shot-1.png" width="400"/>
 </div>
-1. Choose your favorite emoji and react to the Story.
+
+3. Choose your favorite emoji and react to the Story.
 
 **Hide seen Story**
 
@@ -35,7 +36,8 @@ AllReacts is a browser extension that lets you react to Facebook Stories with an
 <div align="center">
   <img src="screenshot/shot-2.png" width="400"/>
 </div>
-1. Enable/Disable 'Hide the seen status on Facebook Stories'.
+
+3. Enable/Disable 'Hide the seen status on Facebook Stories'.
 
 ## Copyright
 
