@@ -38,7 +38,7 @@
     transform: translateY(3.5px);
     transition: all 0.15s ease-in-out;
     animation: fadein 0.3s ease;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(15px);
 }
 
 @keyframes fadein {
@@ -56,8 +56,9 @@
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(255, 255, 255, 0.95);
-    color: #424242;
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(15px);
+    color: #000000;
     padding: 8px 15px;
     font-size: 15px;
     font-weight: 500;
@@ -93,7 +94,7 @@
     visibility: hidden;
     transform: translateY(20px);
     transition: all 0.2s ease-in-out, visibility 0.2s ease;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(15px);
 }
 
 
@@ -127,10 +128,10 @@
     z-index: 1000;
 }
 
-
 .title {
     font-size: 16px;
     font-weight: bold;
+    white-space: nowrap;
     color: white;
     margin: 8px 12px 0px 12px;
     align-items: center;
@@ -219,18 +220,14 @@ input[type="checkbox"] {
     width: 0.8rem;
     height: 0.8rem;
     cursor: pointer;
-
+    accent-color: #0095e4;
 }
 
-.close-btn {
+.close-btn {    
     display: flex;
     align-items: center;
     margin-right: 8px;
     cursor: pointer;
-}
-
-.close-btn:hover {
-    color: rgb(111, 111, 111);
 }
 
 [tooltip] {
@@ -257,9 +254,9 @@ input[type="checkbox"] {
     font-weight: normal;
     background-color: #323435;
     color: #eee;
-    padding: 10px;
+    padding: 8px;
     width: max-content;
-    max-width: 240px;
+    max-width: 250px;
     white-space: normal;
     bottom: calc(80% + 10px);
     border-radius: 3px;
@@ -323,4 +320,10 @@ input[type="checkbox"] {
     left: auto;
     right: 50%;
     transform: translateX(24px);
+}
+
+[tooltip].show-tooltip:before,
+[tooltip].show-tooltip:after {
+    opacity: 1;
+    transition: opacity 0.2s ease;
 }
