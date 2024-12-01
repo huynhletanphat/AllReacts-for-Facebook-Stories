@@ -55,117 +55,116 @@ function loadModal(EMOJI_LIST) {
     // Lấy fb_dtsg và user_id
     const fb_dtsg = getFbdtsg();
     const user_id = getUserId();
+    // Tạo nút react
+    const btnReact = document.createElement('div');
+    btnReact.setAttribute('class', 'btn-react');
+    btnReact.innerHTML = `
+    <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="12" y1="4" x2="12" y2="20" stroke="white" stroke-width="3" stroke-linecap="round"></line>
+        <line x1="4" y1="12" x2="20" y2="12" stroke="white" stroke-width="3" stroke-linecap="round"></line>
+    </svg>
+    `;
+
+    // Tạo nhóm emoji
+    const emojiGroup = document.createElement('ul');
+    emojiGroup.setAttribute('class', 'emoji-group');
+
+    // Tạo container menu
+    const menuContainer = document.createElement('div');
+    menuContainer.setAttribute('class', 'menu-container');
+
+    // Tạo tiêu đề và tiêu đề phụ cho menu
+    const title = document.createElement('span');
+    title.setAttribute('class', 'title');
+    title.textContent = 'AllReacts Facebook Stories';
+    title.setAttribute('tooltip', 'If you reacted but don’t see your reaction on the story, try refreshing the page (F5).');
+
+    const subTitle = document.createElement('span');
+    subTitle.setAttribute('class', 'sub-title');
+    subTitle.innerHTML = 'Developed by <a tooltip="No new updates available" href="https://www.facebook.com/tducxD" target="_blank" style="color: #00a1f1;">Nguyen Trong Duc</a>';
+
+    const linkWithTooltip = subTitle.querySelector('a[tooltip]');
+    let updateChecked = false;
+
+    // Thêm tiêu đề và tiêu đề phụ vào menu container
+    menuContainer.appendChild(title);
+    menuContainer.appendChild(subTitle);
+
+    // Biến timeout để xử lý sự kiện mouseover/mouseout
+    let timeout;
+
+    // Xử lý khi chuột di vào nút react
+    btnReact.addEventListener('mouseover', () => {
+        btnReact.style.scale = '1.2';
+        btnReact.style.border = '1.5px solid white';
+        menuContainer.classList.add('show');
+        rotateIcon(45);
+        if (!updateChecked) {
+            checkUpdate(linkWithTooltip);
+            updateChecked = true;
+        }
+        clearTimeout(timeout);
+    });
+
+    // Xử lý khi chuột rời khỏi nút react
+    btnReact.addEventListener('mouseout', () => {
+        timeout = setTimeout(() => {
+            if (!menuContainer.matches(':hover')) {
+                menuContainer.classList.remove('show');
+            }
+            rotateIcon(0);
+            btnReact.style.border = '1.5px solid #474747';
+        }, 500);
+        btnReact.style.scale = '1';
+    });
+
+    // Xử lý khi chuột di vào menu
+    menuContainer.addEventListener('mouseover', () => {
+        clearTimeout(timeout);
+    });
+
+    // Xử lý khi chuột rời khỏi menu
+    menuContainer.addEventListener('mouseout', () => {
+        timeout = setTimeout(() => {
+            menuContainer.classList.remove('show');
+            btnReact.style.border = '1.5px solid #474747';
+            rotateIcon(0);
+        }, 500);
+        btnReact.style.scale = '1';
+    });
+
+    // Hàm quay biểu tượng khi hover
+    function rotateIcon(degrees) {
+        const icon = btnReact.querySelector('.icon');
+        icon.style.transition = 'transform 0.5s';
+        icon.style.transform = `rotate(${degrees}deg)`;
+    }
+
+    // Lấy lịch sử emoji từ localStorage
+    const emojiHistory = JSON.parse(localStorage.getItem('emojiHistory')) || [];
+
+    // Thêm emoji từ lịch sử vào nhóm emoji
+    groupEmoji(fb_dtsg, user_id, emojiGroup, emojiHistory);
+
+    // Lọc emoji mới chưa có trong lịch sử
+    const filteredEmojiList = EMOJI_LIST.filter(emoji =>
+        !emojiHistory.some(historyItem => historyItem.value === emoji.value)
+    );
+
+    // Thêm emoji mới vào nhóm emoji
+    groupEmoji(fb_dtsg, user_id, emojiGroup, filteredEmojiList);
+
+    // Thêm nhóm emoji vào menu container
+    menuContainer.appendChild(emojiGroup);
+
+    // Tạo phần "More Reactions"
+    const moreReactions = document.createElement('div');
+    moreReactions.setAttribute('class', 'more-reactions');
+    moreReactions.appendChild(btnReact);
+    moreReactions.appendChild(menuContainer);
 
     // Kiểm tra và tạo nút react, tạo menu
     const timeoutCheckStoriesFooter = setInterval(() => {
-        // Tạo nút react
-        const btnReact = document.createElement('div');
-        btnReact.setAttribute('class', 'btn-react');
-        btnReact.innerHTML = `
-            <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <line x1="12" y1="4" x2="12" y2="20" stroke="white" stroke-width="3" stroke-linecap="round"></line>
-                <line x1="4" y1="12" x2="20" y2="12" stroke="white" stroke-width="3" stroke-linecap="round"></line>
-            </svg>
-        `;
-
-        // Tạo nhóm emoji
-        const emojiGroup = document.createElement('ul');
-        emojiGroup.setAttribute('class', 'emoji-group');
-
-        // Tạo container menu
-        const menuContainer = document.createElement('div');
-        menuContainer.setAttribute('class', 'menu-container');
-
-        // Tạo tiêu đề và tiêu đề phụ cho menu
-        const title = document.createElement('span');
-        title.setAttribute('class', 'title');
-        title.textContent = 'AllReacts Facebook Stories';
-        title.setAttribute('tooltip', 'If you reacted but don’t see your reaction on the story, try refreshing the page (F5).');
-
-        const subTitle = document.createElement('span');
-        subTitle.setAttribute('class', 'sub-title');
-        subTitle.innerHTML = 'created by <a tooltip="My Facebook page here" href="https://www.facebook.com/tducxD" target="_blank" style="color: #00a1f1;">Nguyen Trong Duc</a>';
-
-        const linkWithTooltip = subTitle.querySelector('a[tooltip]');
-        let updateChecked = false;
-
-        // Thêm tiêu đề và tiêu đề phụ vào menu container
-        menuContainer.appendChild(title);
-        menuContainer.appendChild(subTitle);
-
-        // Biến timeout để xử lý sự kiện mouseover/mouseout
-        let timeout;
-
-        // Xử lý khi chuột di vào nút react
-        btnReact.addEventListener('mouseover', () => {
-            btnReact.style.scale = '1.2';
-            btnReact.style.border = '1.5px solid white';
-            menuContainer.classList.add('show');
-            rotateIcon(45);
-            if (!updateChecked) {
-                checkUpdate(linkWithTooltip);
-                updateChecked = true;
-            }
-            clearTimeout(timeout);
-        });
-
-        // Xử lý khi chuột rời khỏi nút react
-        btnReact.addEventListener('mouseout', () => {
-            timeout = setTimeout(() => {
-                if (!menuContainer.matches(':hover')) {
-                    menuContainer.classList.remove('show');
-                }
-                rotateIcon(0);
-                btnReact.style.border = '1.5px solid #474747';
-            }, 500);
-            btnReact.style.scale = '1';
-        });
-
-        // Xử lý khi chuột di vào menu
-        menuContainer.addEventListener('mouseover', () => {
-            clearTimeout(timeout);
-        });
-
-        // Xử lý khi chuột rời khỏi menu
-        menuContainer.addEventListener('mouseout', () => {
-            timeout = setTimeout(() => {
-                menuContainer.classList.remove('show');
-                btnReact.style.border = '1.5px solid #474747';
-                rotateIcon(0);
-            }, 500);
-            btnReact.style.scale = '1';
-        });
-
-        // Hàm quay biểu tượng khi hover
-        function rotateIcon(degrees) {
-            const icon = btnReact.querySelector('.icon');
-            icon.style.transition = 'transform 0.5s';
-            icon.style.transform = `rotate(${degrees}deg)`;
-        }
-
-        // Lấy lịch sử emoji từ localStorage
-        const emojiHistory = JSON.parse(localStorage.getItem('emojiHistory')) || [];
-
-        // Thêm emoji từ lịch sử vào nhóm emoji
-        groupEmoji(fb_dtsg, user_id, emojiGroup, emojiHistory);
-
-        // Lọc emoji mới chưa có trong lịch sử
-        const filteredEmojiList = EMOJI_LIST.filter(emoji =>
-            !emojiHistory.some(historyItem => historyItem.value === emoji.value)
-        );
-
-        // Thêm emoji mới vào nhóm emoji
-        groupEmoji(fb_dtsg, user_id, emojiGroup, filteredEmojiList);
-
-        // Thêm nhóm emoji vào menu container
-        menuContainer.appendChild(emojiGroup);
-
-        // Tạo phần "More Reactions"
-        const moreReactions = document.createElement('div');
-        moreReactions.setAttribute('class', 'more-reactions');
-        moreReactions.appendChild(btnReact);
-        moreReactions.appendChild(menuContainer);
-
         // Kiểm tra footer của story và thêm phần "More Reactions"
         const storiesFooter = document.getElementsByClassName('x11lhmoz x78zum5 x1q0g3np xsdox4t x10l6tqk xtzzx4i xwa60dl xl56j7k xtuxyv6');
         if (storiesFooter.length > 0) {
@@ -174,6 +173,73 @@ function loadModal(EMOJI_LIST) {
         }
     }, 100);  // Lặp lại mỗi 100ms để kiểm tra footer của story
 }
+
+(function () {
+    'use strict';
+
+    let isMoreReactionsAdded = false; // Biến cờ để kiểm tra trạng thái
+
+    // Hàm theo dõi vùng nhập liệu contenteditable
+    function setupContentEditableTracking() {
+        const textArea = document.querySelector('[contenteditable="true"][role="textbox"].notranslate._5rpu');
+        const moreReactions = document.querySelector('.more-reactions');
+        if (!moreReactions) return;
+
+        if (textArea) {
+            // Khi người dùng nhấn vào vùng nhập liệu
+            textArea.addEventListener("focus", () => {
+                if (moreReactions.parentElement) {
+                    moreReactions.parentElement.removeChild(moreReactions); // Xóa moreReactions khỏi footer
+                    isMoreReactionsAdded = false; // Đặt lại trạng thái
+                }
+            });
+
+            // Khi người dùng rời khỏi vùng nhập liệu
+            textArea.addEventListener("blur", () => {
+
+                if (!isMoreReactionsAdded) {
+                    // Kiểm tra và tạo nút react, tạo menu
+                    const timeoutCheckStoriesFooter = setInterval(() => {
+                        const storiesFooter = document.getElementsByClassName('x11lhmoz x78zum5 x1q0g3np xsdox4t x10l6tqk xtzzx4i xwa60dl xl56j7k xtuxyv6');
+                        const reactions = document.getElementsByClassName('x78zum5 xl56j7k');
+
+                        let targetDiv = null;
+
+                        for (let i = 0; i < reactions.length; i++) {
+                            const element = reactions[i];
+                            const width = element.offsetWidth;
+
+                            if (width === 336) {
+                                targetDiv = element;
+                                break;
+                            }
+                        }
+
+                        if (storiesFooter.length > 0 && targetDiv) {
+                            clearInterval(timeoutCheckStoriesFooter);
+
+                            if (!isMoreReactionsAdded) {
+                                storiesFooter[storiesFooter.length - 1].appendChild(moreReactions);
+                                isMoreReactionsAdded = true; // Đánh dấu trạng thái đã thêm
+                            }
+                        }
+                    }, 100); // Lặp lại mỗi 100ms để kiểm tra footer của story
+                }
+            });
+        }
+    }
+
+    // Đợi trang tải xong và gọi hàm
+    window.addEventListener('load', setupContentEditableTracking);
+
+    // Nếu vùng nhập liệu được tạo động, sử dụng MutationObserver để theo dõi thay đổi DOM
+    const observer = new MutationObserver(() => {
+        setupContentEditableTracking(); // Kiểm tra lại khi có thay đổi
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+})();
+
 
 // Biến trạng thái story (đang dừng hay không)
 var storyState = false;
@@ -205,8 +271,21 @@ function groupEmoji(fb_dtsg, user_id, emojiGroup, emojiList) {
         const emojiContent = document.createElement('span');
         emojiContent.setAttribute('class', 'emoji-content');
         emojiContent.textContent = emoji.value;
-        emojiLi.appendChild(emojiContent);
         emojiContent.style.textShadow = '0 0 4px #0000005a';
+        //emojiLi.appendChild(emojiContent);
+
+        // Tạo ảnh emoji animated
+        const emojiImage = document.createElement('img');
+        emojiImage.setAttribute('class', 'emoji-image');
+        emojiImage.setAttribute('src', emoji.image_url);
+        emojiLi.appendChild(emojiImage);     // Hiển thị ảnh emoji
+
+        // Tạo ảnh emoji animated
+        const emojiImageAnim = document.createElement('img');
+        emojiImageAnim.setAttribute('class', 'emoji-image-anim');
+        emojiImageAnim.setAttribute('src', emoji.image_anim_url);
+        emojiLi.appendChild(emojiImageAnim);     // Hiển thị ảnh emoji
+
 
         // Tạo tooltip cho emoji
         const tooltip = document.createElement('div');
@@ -268,6 +347,20 @@ function groupEmoji(fb_dtsg, user_id, emojiGroup, emojiList) {
 
         // Sự kiện khi chuột rời khỏi emoji
         emojiLi.addEventListener('mouseleave', () => {
+            // Ẩn ảnh animated và hiển thị emoji text khi chuột rời khỏi
+            // Khi rời khỏi, đợi hoàn thành transition rồi ẩn phần tử
+            emojiImageAnim.addEventListener(
+                'transitionend',
+                () => {
+                    if (getComputedStyle(emojiImageAnim).opacity === '0') {
+                        emojiImageAnim.style.display = 'none';
+                        emojiImageAnim.setAttribute('src', '');  // Xóa src cũ
+                        emojiImageAnim.setAttribute('src', emoji.image_anim_url);
+                        emojiImageAnim.style.display = 'block';
+                    }
+                },
+                { once: true } // Đảm bảo sự kiện chỉ chạy một lần
+            );
             clearTimeout(tooltipTimeout);
             tooltip.style.opacity = '0';
             tooltip.style.transform = 'translateY(10px)';
@@ -283,17 +376,16 @@ function groupEmoji(fb_dtsg, user_id, emojiGroup, emojiList) {
             // Thay đổi kiểu dáng của emoji khi được chọn
             emojiLi.style.backgroundColor = 'rgba(165, 165, 165, 0.9)';
             emojiLi.style.borderRadius = '5px';
-            emojiContent.style.transition = 'transform 0.1s';
-            emojiContent.style.transform = 'scale(1.2)';
+            emojiImageAnim.style.transform = 'scale(1.2)';
             setTimeout(() => {
                 emojiLi.style.backgroundColor = '';
-                emojiContent.style.transform = 'scale(1)';
+                emojiImageAnim.style.transform = 'scale(1)';
             }, 200);
 
             const storyId = getStoryId();
             try {
                 // Lưu emoji vào lịch sử
-                saveEmojiToHistory(emoji.value, emoji.image_url);
+                saveEmojiToHistory(emoji.value, emoji.image_url, emoji.image_anim_url);
                 // Thực hiện phản ứng với story
                 await reactStory(user_id, fb_dtsg, storyId, emoji.value);
             } catch (e) {
@@ -319,12 +411,13 @@ function groupEmoji(fb_dtsg, user_id, emojiGroup, emojiList) {
     });
 }
 
-function saveEmojiToHistory(emojiValue, emojiImageUrl) {
+function saveEmojiToHistory(emojiValue, emojiImageUrl, emojiImageAnimUrl) {
+    ``
     // Lấy lịch sử emoji từ localStorage (nếu không có thì khởi tạo mảng rỗng)
     let emojiHistory = JSON.parse(localStorage.getItem('emojiHistory')) || [];
 
     // Tạo đối tượng emoji mới
-    const emoji = { value: emojiValue, image_url: emojiImageUrl };
+    const emoji = { value: emojiValue, image_url: emojiImageUrl, image_anim_url: emojiImageAnimUrl };
 
     // Kiểm tra xem emoji đã tồn tại trong lịch sử hay chưa
     const emojiIndex = emojiHistory.findIndex(item => item.value === emojiValue);

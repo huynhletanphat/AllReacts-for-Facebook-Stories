@@ -37,7 +37,7 @@
     cursor: pointer;
     transform: translateY(3.5px);
     transition: all 0.15s ease-in-out;
-    animation: fadein 0.3s ease;
+    animation: fadein 0.2s;
     backdrop-filter: blur(15px);
 }
 
@@ -161,6 +161,7 @@
     height: 50px;
     width: 50px;
     display: flex;
+    position: relative;
     justify-content: center;
     align-items: center;
     border-radius: 8px;
@@ -169,8 +170,32 @@
     transition: background-color 0.3s ease-in-out, border-radius 0.3s ease-in-out;
 }
 
-.emoji-content {
-    transition: transform 0.3s ease-in-out;
+.emoji-image, .emoji-image-anim {
+    position: absolute;
+    vertical-align: middle;
+    object-fit: cover;
+    transition: opacity 0.3s ease-in-out, transform 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.emoji-image {
+    transform: translateY(1px);
+    width: 34.8px;
+    height: 34.8px;
+    opacity: 1;
+}
+.emoji-image-anim {
+    height: 34px;
+    width: 34px;
+    transform: translateY(2px);
+    opacity: 0;
+}
+.emoji:hover .emoji-image {
+    opacity: 0; /* Ẩn nội dung khi hover */
+}
+
+.emoji:hover .emoji-image-anim {
+    opacity: 1; /* Hiển thị ảnh khi hover */
 }
 
 .emoji:hover {
