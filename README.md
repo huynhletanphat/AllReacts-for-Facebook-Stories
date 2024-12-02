@@ -1,3 +1,7 @@
+## Latest Updates
+For the latest features and improvements, check out the [CHANGELOG](CHANGELOG.md)
+
+
 # AllReacts for Facebook Stories
 AllReacts is a browser extension that lets you react to Facebook Stories with any emoji, going beyond the default reactions. With it, you can express yourself more creatively when interacting with friends' Stories.
 

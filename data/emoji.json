@@ -216,12 +216,6 @@
         "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/face-without-mouth_1f636.png"
     },
     {
-        "url": "https://emojipedia.org/face-in-clouds/",
-        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/face-in-clouds_1f636-200d-1f32b-fe0f.png",
-        "value": "😶‍🌫️",
-        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/face-in-clouds_1f636-200d-1f32b-fe0f.png"
-    },
-    {
         "url": "https://emojipedia.org/smirking-face/",
         "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/smirking-face_1f60f.png",
         "value": "😏",
@@ -743,6 +737,85 @@
         "value": "🦢",
         "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/swan_1f9a2.png"
     },
+    
+    {
+        "url": "https://emojipedia.org/dog-face/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/dog-face_1f436.png",
+        "value": "🐶",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/dog-face_1f436.png"
+    },
+    {
+        "url": "https://emojipedia.org/panda/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/panda_1f43c.png",
+        "value": "🐼",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/panda_1f43c.png"
+    },
+    {
+        "url": "https://emojipedia.org/frog/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/frog_1f438.png",
+        "value": "🐸",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/frog_1f438.png"
+    },
+    {
+        "url": "https://emojipedia.org/cow-face/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/cow-face_1f42e.png",
+        "value": "🐮",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/cow-face_1f42e.png"
+    },
+    {
+        "url": "https://emojipedia.org/hamster/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/hamster_1f439.png",
+        "value": "🐹",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/hamster_1f439.png"
+    },
+    {
+        "url": "https://emojipedia.org/mouse-face/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/mouse-face_1f42d.png",
+        "value": "🐭",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/mouse-face_1f42d.png"
+    },
+    {
+        "url": "https://emojipedia.org/chicken/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/chicken_1f414.png",
+        "value": "🐔",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/chicken_1f414.png"
+    },
+    {
+        "url": "https://emojipedia.org/unicorn/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/unicorn_1f984.png",
+        "value": "🦄",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/unicorn_1f984.png"
+    },
+    {
+        "url": "https://emojipedia.org/lizard/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/lizard_1f98e.png",
+        "value": "🦎",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/lizard_1f98e.png"
+    },
+    {
+        "url": "https://emojipedia.org/snake/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/snake_1f40d.png",
+        "value": "🐍",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/snake_1f40d.png"
+    },
+    {
+        "url": "https://emojipedia.org/penguin/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/penguin_1f427.png",
+        "value": "🐧",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/penguin_1f427.png"
+    },
+    {
+        "url": "https://emojipedia.org/scorpion/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/scorpion_1f982.png",
+        "value": "🦂",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/scorpion_1f982.png"
+    },
+    {
+        "url": "https://emojipedia.org/butterfly/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/butterfly_1f98b.png",
+        "value": "🦋",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/butterfly_1f98b.png"
+    },
     {
         "url": "https://emojipedia.org/kiss-mark/",
         "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/kiss-mark_1f48b.png",
@@ -790,18 +863,6 @@
         "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/revolving-hearts_1f49e.png",
         "value": "💞",
         "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/revolving-hearts_1f49e.png"
-    },
-    {
-        "url": "https://emojipedia.org/heart-decoration/",
-        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/heart-decoration_1f49f.png",
-        "value": "💟",
-        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/heart-decoration_1f49f.png"
-    },
-    {
-        "url": "https://emojipedia.org/heart-exclamation/",
-        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/heart-exclamation_2763-fe0f.png",
-        "value": "❣️",
-        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/heart-exclamation_2763-fe0f.png"
     },
     {
         "url": "https://emojipedia.org/broken-heart/",
@@ -966,12 +1027,6 @@
         "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/backhand-index-pointing-left_1f448.png"
     },
     {
-        "url": "https://emojipedia.org/love-you-gesture/",
-        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/love-you-gesture_1f91f.png",
-        "value": "🤟",
-        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/love-you-gesture_1f91f.png"
-    },
-    {
         "url": "https://emojipedia.org/hand-with-index-finger-and-thumb-crossed/",
         "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/hand-with-index-finger-and-thumb-crossed_1faf0.png",
         "value": "🫰",
@@ -1042,12 +1097,6 @@
         "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/anatomical-heart_1fac0.png",
         "value": "🫀",
         "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/anatomical-heart_1fac0.png"
-    },
-    {
-        "url": "https://emojipedia.org/fire/",
-        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/fire_1f525.png",
-        "value": "🔥",
-        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/fire_1f525.png"
     },
     {
         "url": "https://emojipedia.org/no-one-under-eighteen/",

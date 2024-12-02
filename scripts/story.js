@@ -36,7 +36,6 @@ function checkUpdate(linkWithTooltip) {
         .then(response => response.json())
         .then(data => {
             const currentVersion = chrome.runtime.getManifest().version;
-            console.log(data.version, currentVersion);
             if (data.version > currentVersion) {
                 linkWithTooltip.setAttribute('tooltip', 'Please check for update here v' + data.version);
                 linkWithTooltip.setAttribute('href', 'https://github.com/DuckCIT/AllReacts-for-Facebook-Stories');
