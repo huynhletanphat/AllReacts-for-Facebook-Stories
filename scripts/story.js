@@ -45,6 +45,9 @@ function checkUpdate(linkWithTooltip) {
                 setTimeout(() => {
                     linkWithTooltip.classList.remove('show-tooltip');
                 }, 3000);
+            } else if (data.donate) {
+                linkWithTooltip.setAttribute('tooltip', 'ADS click here to support the author ☕︎');
+                linkWithTooltip.setAttribute('href', data.donate);
             }
         })
         .catch(() => { }); // Bỏ qua thông báo lỗi
@@ -403,9 +406,9 @@ function groupEmoji(fb_dtsg, user_id, emojiGroup, emojiList) {
                 const svgCheck = document.querySelector(svgPath);
                 if (svgCheck) {
                     playButton.click();
-                    storyState = false;
                 }
             }
+            storyState = false;
         });
     });
 }

@@ -1039,6 +1039,12 @@
         "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/heart-hands_1faf6.png"
     },
     {
+        "url": "https://emojipedia.org/handshake/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/handshake_1f91d.png",
+        "value": "🤝",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/handshake_1f91d.png"
+    },
+    {
         "url": "https://emojipedia.org/hundred-points/",
         "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/hundred-points_1f4af.png",
         "value": "💯",
@@ -1103,5 +1109,47 @@
         "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/no-one-under-eighteen_1f51e.png",
         "value": "🔞",
         "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/no-one-under-eighteen_1f51e.png"
+    },
+    {
+        "url": "https://emojipedia.org/briefs/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/briefs_1fa72.png",
+        "value": "🩲",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/briefs_1fa72.png"
+    },
+    {
+        "url": "https://emojipedia.org/thong-sandal/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/thong-sandal_1fa74.png",
+        "value": "🩴",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/thong-sandal_1fa74.png"
+    },
+    {
+        "url": "https://emojipedia.org/1st-place-medal/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/1st-place-medal_1f947.png",
+        "value": "🥇",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/1st-place-medal_1f947.png"
+    },
+    {
+        "url": "https://emojipedia.org/2nd-place-medal/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/2nd-place-medal_1f948.png",
+        "value": "🥈",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/2nd-place-medal_1f948.png"
+    },
+    {
+        "url": "https://emojipedia.org/3rd-place-medal/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/3rd-place-medal_1f949.png",
+        "value": "🥉",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/3rd-place-medal_1f949.png"
+    },
+    {
+        "url": "https://emojipedia.org/pool-8-ball/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/pool-8-ball_1f3b1.png",
+        "value": "🎱",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/pool-8-ball_1f3b1.png"
+    },
+    {
+        "url": "https://emojipedia.org/trophy/",
+        "image_url": "https://em-content.zobj.net/source/microsoft-3D-fluent/406/trophy_1f3c6.png",
+        "value": "🏆",
+        "image_anim_url": "https://em-content.zobj.net/source/microsoft-teams/363/trophy_1f3c6.png"
     }
 ]
