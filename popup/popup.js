@@ -17,6 +17,17 @@ const closeButton = document.querySelector('.close-btn');
 closeButton.addEventListener('click', function () {
     window.close(); // Đóng popup khi nhấn vào mũi tên
 });
+document.querySelectorAll(".extension-info").forEach(function (item) {
+    item.addEventListener("click", function () {
+        const url = this.getAttribute("data-url");
+        if (chrome.tabs) {
+            chrome.tabs.create({ url: url });
+        } else {
+            window.open(url, "_blank");
+        }
+    });
+});
+
 
 // Khi popup được mở, đọc trạng thái toggle từ chrome.storage
 chrome.storage.sync.get('toggleState', function (data) {

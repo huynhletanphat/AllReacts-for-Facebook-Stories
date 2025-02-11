@@ -3,26 +3,112 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Facebook Switch</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Return YouTube Dislike</title>
+  <style>
+    .popup-container {
+      padding: 5px 10px 10px 10px;
+      user-select: none;
+      width: 300px;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    .title-popup {
+      font-size: 14px;
+      display: flex;
+      font-weight: bold;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sub-title-popup {
+      font-size: 12px;
+      color: #585858;
+      margin-bottom: 10px;
+    }
+
+    .close-btn {
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .extension-info {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #f9f9f9;
+      cursor: pointer;
+    }
+
+    .extension-info img {
+      width: 50px;
+      height: 50px;
+      margin-right: 10px;
+    }
+
+    .extension-details {
+      text-align: left;
+    }
+
+    .more-extensions {
+      margin-top: 10px;
+    }
+
+    .more-extensions a {
+      display: block;
+      text-decoration: none;
+      color: #007bff;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    label {
+      display: flex;
+      font-size: 0.85rem;
+      margin: 8px 0px 8px -2px;
+      align-items: center;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 6px;
+      width: 0.8rem;
+      height: 0.8rem;
+      cursor: pointer;
+      accent-color: #0095e4;
+    }
+  </style>
 </head>
 
 <body>
-  <div class="popup-container">
-
-    <span class="title-popup"><span class="close-btn">
-        <svg viewBox="0 0 448 512" width="13px" height="13px" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M447.1 256C447.1 273.7 433.7 288 416 288H109.3l105.4 105.4c12.5 12.5 12.5 32.75 0 45.25C208.4 444.9 200.2 448 192 448s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25l160-160c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L109.3 224H416C433.7 224 447.1 238.3 447.1 256z" />
-        </svg>
-      </span>AllReacts other Feature</span>
+  <div class="popup-container" id="popup">
+    <div class="title-popup">
+      <span>AllReacts other Feature</span>
+      <span class="close-btn" id="closePopup">&times;</span>
+    </div>
     <hr>
     <label>
       <input type="checkbox" id="toggle-switch">
       <span>Hide the seen status on Facebook Stories</span>
     </label>
-    <span class="sub-title-popup">Refresh the page (F5) to activate the feature</span>
+    <p class="sub-title-popup">Refresh the page (F5) to activate the feature</p>
+    <div class="more-extensions">
+      <span class="sub-title-popup">More Extensions</span>
+      <div class="extension-info" data-url='https://github.com/DuckCIT/Return-YouTube-Dislike'>
+        <img src="https://github.com/DuckCIT/Return-YouTube-Dislike/blob/main/icons/icon.png?raw=true"
+          alt="Return YTB Dislike Icon">
+        <div class="extension-details">
+          <strong>Return YouTube Dislike</strong><br>
+          <small>Restores the dislike count on YouTube videos</small>
+        </div>
+      </div>
+    </div>
   </div>
+
   <script src="popup.js"></script>
 </body>
 

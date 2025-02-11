@@ -202,57 +202,12 @@
     background-color: rgba(165, 165, 165, 0.5);
 }
 
-.popup-container {
-    padding: 8px;
-    user-select: none;
-    font-family: Arial, sans-serif;
-    text-align: center;
-
-}
-
 a {
     text-decoration-line: none;
 }
 
 a:hover {
     text-decoration-line: underline;
-}
-
-.title-popup {
-    font-size: 14px;
-    display: flex;
-    white-space: nowrap;
-    font-weight: bold;
-}
-
-.sub-title-popup {
-    font-size: 12px;
-    color: #585858;
-    font-weight: normal;
-}
-
-label {
-    display: flex;
-    font-size: 0.8rem;
-    margin: 8px 0px 8px -2px;
-    align-items: center;
-    cursor: pointer;
-    white-space: nowrap;
-}
-
-input[type="checkbox"] {
-    margin-right: 6px;
-    width: 0.8rem;
-    height: 0.8rem;
-    cursor: pointer;
-    accent-color: #0095e4;
-}
-
-.close-btn {    
-    display: flex;
-    align-items: center;
-    margin-right: 8px;
-    cursor: pointer;
 }
 
 [tooltip] {

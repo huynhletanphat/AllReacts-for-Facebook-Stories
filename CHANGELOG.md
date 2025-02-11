@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.0.4
+- Update UI
+
 ## v1.0.3
 - Added new emojis.
 
