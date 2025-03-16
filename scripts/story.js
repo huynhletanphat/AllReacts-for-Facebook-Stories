@@ -262,34 +262,49 @@ function groupEmoji(fb_dtsg, user_id, emojiGroup, emojiList) {
     let tooltipTimeout;
     const svgPath = 'svg path[d="m18.477 12.906-9.711 5.919A1.148 1.148 0 0 1 7 17.919V6.081a1.148 1.148 0 0 1 1.766-.906l9.711 5.919a1.046 1.046 0 0 1 0 1.812z"]';
 
+    // Tạo Intersection Observer để lazy load hình ảnh
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const emojiLi = entry.target;
+                const emojiImage = emojiLi.querySelector('.emoji-image');
+                const emojiImageAnim = emojiLi.querySelector('.emoji-image-anim');
+
+                if (emojiImage && emojiImage.dataset.src) {
+                    emojiImage.src = emojiImage.dataset.src;
+                    emojiImage.removeAttribute('data-src');
+                }
+                if (emojiImageAnim && emojiImageAnim.dataset.src) {
+                    emojiImageAnim.src = emojiImageAnim.dataset.src;
+                    emojiImageAnim.removeAttribute('data-src');
+                }
+                
+                emojiLi.classList.add('emoji-appear');
+                observer.unobserve(emojiLi);
+            }
+        });
+    }, {
+        rootMargin: "0px 0px 100px 0px"
+    });
+
     // Lặp qua từng emoji trong danh sách
     emojiList.forEach(emoji => {
-        // Tạo phần tử li cho mỗi emoji
         const emojiLi = document.createElement('li');
         emojiLi.setAttribute('class', 'emoji');
         emojiLi.setAttribute('value', emoji.value);
 
-        // Tạo phần tử span chứa nội dung emoji
-        const emojiContent = document.createElement('span');
-        emojiContent.setAttribute('class', 'emoji-content');
-        emojiContent.textContent = emoji.value;
-        emojiContent.style.textShadow = '0 0 4px #0000005a';
-        //emojiLi.appendChild(emojiContent);
-
-        // Tạo ảnh emoji animated
         const emojiImage = document.createElement('img');
         emojiImage.setAttribute('class', 'emoji-image');
-        emojiImage.setAttribute('src', emoji.image_url);
-        emojiLi.appendChild(emojiImage);     // Hiển thị ảnh emoji
+        emojiImage.setAttribute('data-src', emoji.image_url);
+        emojiLi.appendChild(emojiImage);
 
-        // Tạo ảnh emoji animated
         const emojiImageAnim = document.createElement('img');
         emojiImageAnim.setAttribute('class', 'emoji-image-anim');
-        emojiImageAnim.setAttribute('src', emoji.image_anim_url);
-        emojiLi.appendChild(emojiImageAnim);     // Hiển thị ảnh emoji
+        emojiImageAnim.setAttribute('data-src', emoji.image_anim_url);
+        emojiLi.appendChild(emojiImageAnim);
 
+        observer.observe(emojiLi);
 
-        // Tạo tooltip cho emoji
         const tooltip = document.createElement('div');
         tooltip.classList.add('info-emoji');
         tooltip.textContent = getEmojiNameFromUrl(emoji.image_url);
@@ -297,8 +312,6 @@ function groupEmoji(fb_dtsg, user_id, emojiGroup, emojiList) {
         // Sự kiện khi chuột vào emoji
         emojiLi.addEventListener('mouseenter', () => {
             const stopButton = getButton();
-
-            // Tạm dừng story nếu nút dừng story tồn tại và story chưa bị dừng
             if (stopButton) {
                 const svgCheck = document.querySelector(svgPath);
                 if (!svgCheck && !storyState) {
@@ -307,16 +320,17 @@ function groupEmoji(fb_dtsg, user_id, emojiGroup, emojiList) {
                 }
             }
 
-            // Hiển thị tooltip sau 500ms
+            // Reset và chạy lại animation của emoji-image-anim
+            emojiImageAnim.src = ''; // Xóa src để reset GIF
+            emojiImageAnim.src = emoji.image_anim_url; // Tải lại để chạy từ đầu
+
             tooltipTimeout = setTimeout(() => {
                 tooltip.style.opacity = '1';
                 tooltip.style.transform = 'translateY(0)';
             }, 500);
 
-            // Thêm tooltip vào body
             document.body.appendChild(tooltip);
 
-            // Vị trí của tooltip
             const rect = emojiLi.getBoundingClientRect();
             const tooltipRect = tooltip.getBoundingClientRect();
 
@@ -326,7 +340,6 @@ function groupEmoji(fb_dtsg, user_id, emojiGroup, emojiList) {
             tooltip.style.left = `${leftPosition}px`;
             tooltip.style.top = `${topPosition}px`;
 
-            // Điều chỉnh tooltip nếu nó vượt quá mép màn hình
             const rightEdge = leftPosition + tooltipRect.width;
             const bottomEdge = topPosition + tooltipRect.height;
 
@@ -338,7 +351,6 @@ function groupEmoji(fb_dtsg, user_id, emojiGroup, emojiList) {
                 tooltip.style.top = `${rect.top + window.pageYOffset - tooltipRect.height - 5}px`;
             }
 
-            // Điều chỉnh tooltip nếu nó vượt quá menu chứa emoji
             const menuRect = emojiGroup.getBoundingClientRect();
             if (bottomEdge > menuRect.bottom) {
                 tooltip.style.top = `${rect.top + window.pageYOffset - tooltipRect.height - 5}px`;
@@ -349,20 +361,10 @@ function groupEmoji(fb_dtsg, user_id, emojiGroup, emojiList) {
 
         // Sự kiện khi chuột rời khỏi emoji
         emojiLi.addEventListener('mouseleave', () => {
-            // Ẩn ảnh animated và hiển thị emoji text khi chuột rời khỏi
-            // Khi rời khỏi, đợi hoàn thành transition rồi ẩn phần tử
-            emojiImageAnim.addEventListener(
-                'transitionend',
-                () => {
-                    if (getComputedStyle(emojiImageAnim).opacity === '0') {
-                        emojiImageAnim.style.display = 'none';
-                        emojiImageAnim.setAttribute('src', '');  // Xóa src cũ
-                        emojiImageAnim.setAttribute('src', emoji.image_anim_url);
-                        emojiImageAnim.style.display = 'block';
-                    }
-                },
-                { once: true } // Đảm bảo sự kiện chỉ chạy một lần
-            );
+            // Reset animation về trạng thái đầu tiên
+            emojiImageAnim.src = ''; // Xóa src để dừng GIF
+            emojiImageAnim.src = emoji.image_anim_url; // Tải lại để reset về khung đầu
+
             clearTimeout(tooltipTimeout);
             tooltip.style.opacity = '0';
             tooltip.style.transform = 'translateY(10px)';
@@ -375,7 +377,6 @@ function groupEmoji(fb_dtsg, user_id, emojiGroup, emojiList) {
 
         // Sự kiện khi người dùng click vào emoji
         emojiLi.onclick = async function () {
-            // Thay đổi kiểu dáng của emoji khi được chọn
             emojiLi.style.backgroundColor = 'rgba(165, 165, 165, 0.9)';
             emojiLi.style.borderRadius = '5px';
             emojiImageAnim.style.transform = 'scale(1.2)';
@@ -386,22 +387,17 @@ function groupEmoji(fb_dtsg, user_id, emojiGroup, emojiList) {
 
             const storyId = getStoryId();
             try {
-                // Lưu emoji vào lịch sử
                 saveEmojiToHistory(emoji.value, emoji.image_url, emoji.image_anim_url);
-                // Thực hiện phản ứng với story
                 await reactStory(user_id, fb_dtsg, storyId, emoji.value);
             } catch (e) {
                 console.error(e);
             }
         };
 
-        // Thêm emoji vào nhóm emoji
         emojiGroup.appendChild(emojiLi);
 
-        // Sự kiện khi chuột rời khỏi nhóm emoji
         emojiGroup.addEventListener('mouseleave', () => {
             const playButton = getButton();
-            // Nếu story bị dừng và có nút phát lại, tiếp tục phát story
             if (playButton && storyState) {
                 const svgCheck = document.querySelector(svgPath);
                 if (svgCheck) {

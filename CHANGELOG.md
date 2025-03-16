@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.5
+- Improved emoji loading performance.
+- Fixed bugs related to emoji reactions.
+- Enhanced UI for better user experience.
+
 ## v1.0.4
 - Update UI
 

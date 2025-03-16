@@ -177,7 +177,23 @@
     transition: opacity 0.3s ease-in-out, transform 0.2s ease-in-out;
     cursor: pointer;
 }
+.emoji-appear {
+    animation: emojiFadeIn 0.3s ease-out forwards;
+}
+.emoji-appear .emoji-image-anim {
+    opacity: 0;
+}
 
+@keyframes emojiFadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
 .emoji-image {
     transform: translateY(1px);
     width: 34.8px;

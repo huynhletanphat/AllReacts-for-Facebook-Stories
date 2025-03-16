@@ -5,12 +5,33 @@
   <meta charset="UTF-8">
   <title>Return YouTube Dislike</title>
   <style>
-    .popup-container {
-      padding: 5px 10px 10px 10px;
-      user-select: none;
-      width: 300px;
+    :root {
+      --bg-color: #0d1117;
+      --text-color: #c9d1d9;
+      --border-color: #30363d;
+      --hover-bg: #161b22;
+      --primary-color: #4a9dfc;
+      --shadow-color: rgba(0, 0, 0, 0.5);
+    }
+
+    body {
+      background: var(--bg-color);
+      color: var(--text-color);
       font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .popup-container {
+      padding: 12px;
+      user-select: none;
+      min-width: 280px;
+      max-width: 500px;
+      width: auto;
+      border-radius: 10px;
       text-align: center;
+      transition: all 0.3s ease;
     }
 
     .title-popup {
@@ -22,14 +43,20 @@
     }
 
     .sub-title-popup {
-      font-size: 12px;
-      color: #585858;
+      font-size: 11px;
+      color: #8b949e;
       margin-bottom: 10px;
     }
 
     .close-btn {
-      font-size: 20px;
+      font-size: 18px;
       cursor: pointer;
+      color: var(--text-color);
+      transition: color 0.3s ease;
+    }
+
+    .close-btn:hover {
+      color: var(--primary-color);
     }
 
     .extension-info {
@@ -37,49 +64,93 @@
       align-items: center;
       margin-top: 10px;
       padding: 10px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--border-color);
       border-radius: 8px;
-      background: #f9f9f9;
+      background: var(--hover-bg);
       cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .extension-info:hover {
+      background: var(--border-color);
+      transform: scale(1.02);
     }
 
     .extension-info img {
-      width: 50px;
-      height: 50px;
+      width: 45px;
+      height: 45px;
       margin-right: 10px;
+      border-radius: 6px;
     }
 
     .extension-details {
       text-align: left;
-    }
-
-    .more-extensions {
-      margin-top: 10px;
+      font-size: 12px;
     }
 
     .more-extensions a {
       display: block;
       text-decoration: none;
-      color: #007bff;
+      color: var(--primary-color);
       font-size: 12px;
       margin-top: 5px;
+      transition: color 0.3s ease;
+    }
+
+    .more-extensions a:hover {
+      color: #79c0ff;
     }
 
     label {
       display: flex;
       font-size: 0.85rem;
-      margin: 8px 0px 8px -2px;
+      margin: 8px 0;
       align-items: center;
       cursor: pointer;
       white-space: nowrap;
     }
 
     input[type="checkbox"] {
-      margin-right: 6px;
-      width: 0.8rem;
-      height: 0.8rem;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      margin-right: 10px;
+      border-radius: 5px;
+      border: 1px solid var(--border-color);
+      background: var(--hover-bg);
+      position: relative;
       cursor: pointer;
-      accent-color: #0095e4;
+      transition: background 0.1s, border 0.1s;
+    }
+
+    input[type="checkbox"]:hover {
+      background: #22262b;
+    }
+
+    input[type="checkbox"]:checked {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+
+    input[type="checkbox"]::before {
+      content: '\1F5F8';
+      font-size: 14px;
+      color: transparent;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: color 0.1s;
+    }
+
+    input[type="checkbox"]:checked::before {
+      color: #fff;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border-color);
+      margin: 8px 0;
     }
   </style>
 </head>
@@ -87,7 +158,7 @@
 <body>
   <div class="popup-container" id="popup">
     <div class="title-popup">
-      <span>AllReacts other Feature</span>
+      <span>AllReacts Other Features</span>
       <span class="close-btn" id="closePopup">&times;</span>
     </div>
     <hr>
@@ -98,18 +169,15 @@
     <p class="sub-title-popup">Refresh the page (F5) to activate the feature</p>
     <div class="more-extensions">
       <span class="sub-title-popup">More Extensions</span>
-      <div class="extension-info" data-url='https://github.com/DuckCIT/Return-YouTube-Dislike'>
-        <img src="https://github.com/DuckCIT/Return-YouTube-Dislike/blob/main/icons/icon.png?raw=true"
-          alt="Return YTB Dislike Icon">
+      <div class="extension-info" data-url='https://github.com/DuckCIT/TikTok-Comment-Translator'>
         <div class="extension-details">
-          <strong>Return YouTube Dislike</strong><br>
-          <small>Restores the dislike count on YouTube videos</small>
+          <strong>TikTok Comment Translator</strong><br>
+          <small>Add a Translate button for TikTok comments</small>
         </div>
       </div>
     </div>
   </div>
-
-  <script src="popup.js"></script>
 </body>
+<script src="popup.js"></script>
 
 </html>
