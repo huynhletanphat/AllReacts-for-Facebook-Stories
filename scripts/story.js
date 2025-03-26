@@ -1,21 +1,31 @@
-(async () => {
-    // Kiểm tra nếu đã có nút 'btn-react' thì không làm gì cả
-    if (document.getElementsByClassName('btn-react').length > 0) return;
+var EMOJI_LIST = null; // Giữ emoji trong bộ nhớ
+
+// Mảng lưu trữ tất cả các toast đang hiển thị
+var toasts = [];
+
+async function loadEmojis() {
+    if (EMOJI_LIST) {
+        loadModal(EMOJI_LIST); // Nếu đã tải trước đó, không cần fetch lại
+        return;
+    }
 
     try {
-        // Lấy dữ liệu emoji từ file JSON
-        const emojiJson = await fetch(chrome.runtime.getURL('data/emoji.json'));
+        const url = extension.runtime.getURL('data/emoji.json');
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Failed to fetch: ${response.status}`);
 
-        // Chuyển đổi dữ liệu JSON thành đối tượng JavaScript
-        const EMOJI_LIST = await emojiJson.json();
-
-        // Gọi hàm để tải modal với danh sách emoji
+        EMOJI_LIST = await response.json(); // Lưu vào biến toàn cục
         loadModal(EMOJI_LIST);
     } catch (e) {
-        // Nếu có lỗi xảy ra trong quá trình tải emoji, hiển thị thông báo lỗi
-        showToast("Failed to load emojis. Please try again");
+        showToast("Failed to load emojis.");
     }
+}
+
+(async () => {
+    if (document.getElementsByClassName('btn-react').length > 0) return;
+    loadEmojis(); // Chỉ tải lại emoji khi cần
 })();
+
 
 function getEmojiNameFromUrl(url) {
     // Tách URL thành các phần nhỏ bằng dấu '/'
@@ -31,26 +41,27 @@ function getEmojiNameFromUrl(url) {
 }
 
 function checkUpdate(linkWithTooltip) {
-    // Kiểm tra cập nhật
-    fetch("https://raw.githubusercontent.com/DuckCIT/AllReacts-for-Facebook-Stories/main/data/version.json")
-        .then(response => response.json())
-        .then(data => {
-            const currentVersion = chrome.runtime.getManifest().version;
-            if (data.version > currentVersion) {
-                linkWithTooltip.setAttribute('tooltip', 'Please check for update here v' + data.version);
-                linkWithTooltip.setAttribute('href', 'https://github.com/DuckCIT/AllReacts-for-Facebook-Stories');
-                setTimeout(() => {
-                    linkWithTooltip.classList.add('show-tooltip');
-                }, 500);
-                setTimeout(() => {
-                    linkWithTooltip.classList.remove('show-tooltip');
-                }, 3000);
-            } else if (data.donate) {
-                linkWithTooltip.setAttribute('tooltip', 'ADS click here to support the author ☕︎');
-                linkWithTooltip.setAttribute('href', data.donate);
-            }
-        })
-        .catch(() => { }); // Bỏ qua thông báo lỗi
+    // Gửi tin nhắn đến background script để kiểm tra version
+    extension.runtime.sendMessage({ action: "checkUpdate" }, (response) => {
+        if (extension.runtime.lastError) {
+            return; // Bỏ qua lỗi nếu có
+        }
+        const data = response.data;
+        const currentVersion = extension.runtime.getManifest().version;
+        if (data.version > currentVersion) {
+            linkWithTooltip.setAttribute('tooltip', 'Please check for update here v' + data.version);
+            linkWithTooltip.setAttribute('href', 'https://github.com/DuckCIT/AllReacts-for-Facebook-Stories');
+            setTimeout(() => {
+                linkWithTooltip.classList.add('show-tooltip');
+            }, 500);
+            setTimeout(() => {
+                linkWithTooltip.classList.remove('show-tooltip');
+            }, 3000);
+        } else if (data.donate) {
+            linkWithTooltip.setAttribute('tooltip', 'Click here to visit the author\'s support page ☕︎');
+            linkWithTooltip.setAttribute('href', data.donate);
+        }
+    });
 }
 
 function loadModal(EMOJI_LIST) {
@@ -166,79 +177,86 @@ function loadModal(EMOJI_LIST) {
     moreReactions.appendChild(menuContainer);
 
     // Kiểm tra và tạo nút react, tạo menu
-    const timeoutCheckStoriesFooter = setInterval(() => {
-        // Kiểm tra footer của story và thêm phần "More Reactions"
-        const storiesFooter = document.getElementsByClassName('x11lhmoz x78zum5 x1q0g3np xsdox4t x10l6tqk xtzzx4i xwa60dl xl56j7k xtuxyv6');
-        if (storiesFooter.length > 0) {
-            clearInterval(timeoutCheckStoriesFooter);
-            storiesFooter[storiesFooter.length - 1].appendChild(moreReactions);
+    const injectInitialMoreReactions = () => {
+        const storiesFooter = document.querySelector('.x11lhmoz.x78zum5.x1q0g3np.xsdox4t.x10l6tqk.xtzzx4i.xwa60dl.xl56j7k.xtuxyv6');
+        if (!storiesFooter) return false;
+
+        const defaultReactions = Array.from(storiesFooter.querySelectorAll('.x78zum5.xl56j7k'))
+            .find(el => el.offsetWidth === 336);
+        if (!defaultReactions) return false;
+
+        if (!storiesFooter.querySelector('.more-reactions')) {
+            defaultReactions.insertAdjacentElement('afterend', moreReactions);
+            return true;
         }
-    }, 100);  // Lặp lại mỗi 100ms để kiểm tra footer của story
+        return false;
+    };
+
+    const timeoutCheckStoriesFooter = setInterval(() => {
+        if (injectInitialMoreReactions()) {
+            clearInterval(timeoutCheckStoriesFooter);
+        }
+    }, 100);
 }
 
 (function () {
     'use strict';
 
-    let isMoreReactionsAdded = false; // Biến cờ để kiểm tra trạng thái
+    let isMoreReactionsAdded = false;
 
-    // Hàm theo dõi vùng nhập liệu contenteditable
+    // Hàm kiểm tra và chèn/sửa vị trí "More Reactions"
+    function injectMoreReactions(moreReactions) {
+        const storiesFooter = document.querySelector('.x11lhmoz.x78zum5.x1q0g3np.xsdox4t.x10l6tqk.xtzzx4i.xwa60dl.xl56j7k.xtuxyv6');
+        if (!storiesFooter) return false;
+
+        const defaultReactions = Array.from(storiesFooter.querySelectorAll('.x78zum5.xl56j7k'))
+            .find(el => el.offsetWidth === 336);
+        if (!defaultReactions) {
+            // Nếu reactions mặc định không tồn tại, xóa "More Reactions"
+            if (moreReactions.parentElement) {
+                moreReactions.parentElement.removeChild(moreReactions);
+                isMoreReactionsAdded = false;
+            }
+            return false;
+        }
+
+        const currentMoreReactions = storiesFooter.querySelector('.more-reactions');
+        if (currentMoreReactions) {
+            // Nếu "More Reactions" đã tồn tại nhưng sai vị trí, di chuyển nó
+            if (currentMoreReactions.previousElementSibling !== defaultReactions) {
+                defaultReactions.insertAdjacentElement('afterend', currentMoreReactions);
+            }
+            isMoreReactionsAdded = true;
+        } else {
+            // Nếu chưa có, chèn mới
+            defaultReactions.insertAdjacentElement('afterend', moreReactions);
+            isMoreReactionsAdded = true;
+        }
+        return true;
+    }
+
+    // Hàm thiết lập theo dõi DOM
     function setupContentEditableTracking() {
-        const textArea = document.querySelector('[contenteditable="true"][role="textbox"].notranslate._5rpu');
         const moreReactions = document.querySelector('.more-reactions');
         if (!moreReactions) return;
 
-        if (textArea) {
-            // Khi người dùng nhấn vào vùng nhập liệu
-            textArea.addEventListener("focus", () => {
-                if (moreReactions.parentElement) {
-                    moreReactions.parentElement.removeChild(moreReactions); // Xóa moreReactions khỏi footer
-                    isMoreReactionsAdded = false; // Đặt lại trạng thái
-                }
-            });
-
-            // Khi người dùng rời khỏi vùng nhập liệu
-            textArea.addEventListener("blur", () => {
-
-                if (!isMoreReactionsAdded) {
-                    // Kiểm tra và tạo nút react, tạo menu
-                    const timeoutCheckStoriesFooter = setInterval(() => {
-                        const storiesFooter = document.getElementsByClassName('x11lhmoz x78zum5 x1q0g3np xsdox4t x10l6tqk xtzzx4i xwa60dl xl56j7k xtuxyv6');
-                        const reactions = document.getElementsByClassName('x78zum5 xl56j7k');
-
-                        let targetDiv = null;
-
-                        for (let i = 0; i < reactions.length; i++) {
-                            const element = reactions[i];
-                            const width = element.offsetWidth;
-
-                            if (width === 336) {
-                                targetDiv = element;
-                                break;
-                            }
-                        }
-
-                        if (storiesFooter.length > 0 && targetDiv) {
-                            clearInterval(timeoutCheckStoriesFooter);
-
-                            if (!isMoreReactionsAdded) {
-                                storiesFooter[storiesFooter.length - 1].appendChild(moreReactions);
-                                isMoreReactionsAdded = true; // Đánh dấu trạng thái đã thêm
-                            }
-                        }
-                    }, 100); // Lặp lại mỗi 100ms để kiểm tra footer của story
-                }
-            });
-        }
+        // Theo dõi DOM liên tục
+        const observer = new MutationObserver(() => {
+            injectMoreReactions(moreReactions);
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
     }
 
-    // Đợi trang tải xong và gọi hàm
+    // Gọi hàm khi trang tải
     window.addEventListener('load', setupContentEditableTracking);
 
-    // Nếu vùng nhập liệu được tạo động, sử dụng MutationObserver để theo dõi thay đổi DOM
+    // Theo dõi thay đổi DOM để chạy lại nếu "More Reactions" bị xóa
     const observer = new MutationObserver(() => {
-        setupContentEditableTracking(); // Kiểm tra lại khi có thay đổi
+        if (!document.querySelector('.more-reactions')) {
+            isMoreReactionsAdded = false;
+        }
+        setupContentEditableTracking();
     });
-
     observer.observe(document.body, { childList: true, subtree: true });
 })();
 
@@ -438,68 +456,94 @@ function saveEmojiToHistory(emojiValue, emojiImageUrl, emojiImageAnimUrl) {
 }
 
 
-// Mảng lưu trữ các thông báo toast hiện tại
-var toasts = [];
-
 /**
  * Hiển thị một thông báo toast trên màn hình
- * @param {string} message - Thông điệp cần hiển thị trong toast
+ * @param {string} message - Nội dung thông báo
+ * @param {string} type - Loại thông báo ('loading' | 'success' | 'error')
+ * @returns {HTMLElement} - Trả về phần tử toast vừa tạo
  */
-function showToast(message) {
+function showToast(message, type = 'info') {
     // Tạo phần tử div cho toast
     const toast = document.createElement('div');
-    toast.setAttribute('class', 'toast');
-    toast.textContent = message;  // Thiết lập nội dung cho toast
-    toast.style.overflow = 'hidden';  // Đảm bảo không bị tràn nội dung
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
 
-    // Tạo một thanh tiến trình cho toast
-    const progressBar = document.createElement('div');
-    progressBar.setAttribute('class', 'progress-bar');
-    toast.appendChild(progressBar);  // Thêm thanh tiến trình vào toast
+    // Nếu là loading, lưu ID để cập nhật sau này
+    if (type === 'loading') {
+        toast.dataset.loadingId = `loading-${Date.now()}`;
+    }
 
-    // Thêm toast vào body của trang web
+    // Nếu không phải loading, thêm progress bar
+    if (type !== 'loading') {
+        const progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar';
+        toast.appendChild(progressBar);
+        setTimeout(() => {
+            progressBar.style.width = '0%';
+        }, 100);
+    }
+
+    // Thêm toast vào body
     document.body.appendChild(toast);
-    // Lưu trữ toast vào mảng toasts
     toasts.push(toast);
-
-    // Cập nhật vị trí cho các toast
     updateToastPositions();
 
-    // Sau 100ms, bắt đầu giảm chiều rộng của thanh tiến trình (tạo hiệu ứng)
-    setTimeout(() => {
-        progressBar.style.width = '0%';
-    }, 100);
+    // Nếu không phải loading, tự động xóa sau 3 giây
+    if (type !== 'loading') {
+        setTimeout(() => removeToast(toast), 3000);
+    }
 
-    // Sau 3 giây, bắt đầu ẩn toast và xóa nó khỏi DOM
-    setTimeout(() => {
-        toast.style.opacity = '0';  // Tạo hiệu ứng ẩn
-        // Sau 510ms (để hiệu ứng ẩn hoàn tất), xóa toast khỏi DOM
-        setTimeout(() => {
-            if (toast.parentNode) {
-                toast.parentNode.removeChild(toast);  // Xóa toast
-            }
-
-            // Xóa toast khỏi mảng toasts
-            const index = toasts.indexOf(toast);
-            if (index > -1) {
-                toasts.splice(index, 1);
-                // Cập nhật lại vị trí các toast
-                updateToastPositions();
-            }
-        }, 510);
-    }, 3000);
+    return toast;
 }
 
 /**
- * Cập nhật vị trí của các toast trong mảng toasts
- * Đảm bảo các toast được hiển thị chồng lên nhau từ dưới lên
+ * Cập nhật vị trí của các toast để chúng xếp chồng lên nhau
  */
 function updateToastPositions() {
     toasts.forEach((toast, index) => {
-        // Đặt vị trí bottom cho mỗi toast, tạo khoảng cách giữa các toast
-        toast.style.bottom = `${70 + (index * 40)}px`;
+        toast.style.bottom = `${20 + index * 50}px`;
     });
 }
+
+/**
+ * Xóa một toast khỏi giao diện và mảng
+ * @param {HTMLElement} toast - Phần tử toast cần xóa
+ */
+function removeToast(toast) {
+    toast.style.opacity = '0';
+    setTimeout(() => {
+        toast.remove();
+        toasts = toasts.filter(t => t !== toast);
+        updateToastPositions();
+    }, 500);
+}
+
+/**
+ * Cập nhật một toast loading thành success hoặc error
+ * @param {string} loadingId - ID của toast loading cần thay thế
+ * @param {string} newMessage - Thông báo mới
+ * @param {string} newType - Loại mới ('success' hoặc 'error')
+ */
+function updateToast(loadingId, newMessage, newType) {
+    const loadingToast = toasts.find(toast => toast.dataset.loadingId === loadingId);
+    if (loadingToast) {
+        loadingToast.textContent = newMessage;
+        loadingToast.className = `toast ${newType}`;
+        delete loadingToast.dataset.loadingId;
+
+        // Thêm progress bar nếu là success/error
+        const progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar';
+        loadingToast.appendChild(progressBar);
+        setTimeout(() => {
+            progressBar.style.width = '0%';
+        }, 100);
+
+        // Xóa toast sau 3 giây
+        setTimeout(() => removeToast(loadingToast), 3000);
+    }
+}
+
 
 /**
  * Lấy ID của story hiện tại
@@ -540,6 +584,7 @@ function getUserId() {
  */
 function reactStory(user_id, fb_dtsg, story_id, message) {
     return new Promise(async (resolve, reject) => {
+        const loadingToast = showToast('Sending request...', 'loading');
         // Dữ liệu gửi đi cho mutation GraphQL
         const variables = {
             input: {
@@ -583,10 +628,11 @@ function reactStory(user_id, fb_dtsg, story_id, message) {
             }
 
             // Hiển thị thông báo khi phản hồi thành công
-            showToast(`You reacted with an emoji ${message}`);
+            updateToast(loadingToast.dataset.loadingId, `You reacted with an emoji ${message}`, 'success');
             resolve(res);
         } catch (error) {
             // Nếu có lỗi trong quá trình gửi yêu cầu, reject Promise
+            updateToast(loadingToast.dataset.loadingId, 'Request failed!', 'error');
             reject(error);
         }
     });

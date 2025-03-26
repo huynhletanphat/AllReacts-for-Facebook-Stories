@@ -18,6 +18,13 @@
     border-radius: 10px;
 }
 
+@-moz-document url-prefix() {
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: #585858 rgba(0, 0, 0, 0);
+    }
+}
+
 .more-reactions {
     position: relative;
     user-select: none;

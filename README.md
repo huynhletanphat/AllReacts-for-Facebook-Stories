@@ -1,60 +1,62 @@
+<p align="center"><a href="https://github.com/DuckCIT/AllReacts-for-Facebook-Stories" target="_blank" rel="noreferrer noopener"><img width="90" alt="AllReacts Logo" src="icons/icon128.png"></a></p>
+<p align="center">AllReacts for Facebook Stories <strong>enhances</strong> your Facebook experience by letting you <strong>react with any emoji</strong> and <strong>view Stories unseen</strong>.</p>
+<br/>
+<p align="center">
+  <a rel="noreferrer noopener" href="https://chromewebstore.google.com/detail/allreacts-for-facebook-stories"><img alt="Chrome Web Store" src="https://img.shields.io/badge/Chrome-141e24.svg?&style=for-the-badge&logo=google-chrome&logoColor=white"></a>
+  <a rel="noreferrer noopener" href="https://addons.mozilla.org/firefox/addon/allreacts-for-facebook-stories/"><img alt="Firefox Add-ons" src="https://img.shields.io/badge/Firefox-141e24.svg?&style=for-the-badge&logo=firefox-browser&logoColor=white"></a>
+  <a rel="noreferrer noopener" href="https://microsoftedge.microsoft.com/addons/detail/allreacts-for-facebook-stories"><img alt="Edge Addons" src="https://img.shields.io/badge/Edge-141e24.svg?&style=for-the-badge&logo=microsoft-edge&logoColor=white"></a>
+</p>
+
+<h2 align="center">AllReacts for Facebook Stories</h2>
+<br/>
+<p align="center">AllReacts is an <strong>open-source</strong> MIT-licensed <strong>browser extension</strong> that lets you react to Facebook Stories with any emoji, going beyond the default reactions. It also allows you to view Stories without marking them as "seen," offering more flexibility and privacy.</p>
+<br/>
+
 ## Latest Updates
-For the latest features and improvements, check out the [CHANGELOG](CHANGELOG.md)
-
-
-# AllReacts for Facebook Stories
-AllReacts is a browser extension that lets you react to Facebook Stories with any emoji, going beyond the default reactions. With it, you can express yourself more creatively when interacting with friends' Stories.
+For the latest features and improvements, check out the [CHANGELOG](CHANGELOG.md).
 
 ## Features
-
-- **React with any emoji on Stories**: No longer limited to Facebook's default emojis, you can choose and react with any emoji you like on Stories.
-- **Unseen Facebook Stories**: View Facebook Stories without showing up as "seen," so others won’t know you've viewed their stories.
-- **Simple and easy-to-use interface**: The extension has a user-friendly interface for quick and easy interaction.
+- **React with Any Emoji**: Break free from Facebook's default reactions and use any emoji to express yourself on Stories.
+- **Unseen Stories**: View Stories discreetly without notifying the poster.
+- **User-Friendly Interface**: Enjoy a simple, intuitive design for seamless interaction.
 
 ## Installation
+### Option 1: Install from Browser Stores
+- **Firefox**: Download from [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/allreacts-for-facebook-stories/).
+- Once installed, the AllReacts icon will appear in your browser toolbar.
 
-1. **Clone** the repository (or Download ZIP):
+### Option 2: Manual Installation (For Developers)
+1. **Clone the Repository** (or Download ZIP):
     ```bash
     git clone https://github.com/DuckCIT/AllReacts-for-Facebook-Stories.git
-    ```
-2. **Load the extension** on your browser:
-   - Go to `chrome://extensions/` on Chrome or `edge://extensions/` on Edge.
-   - Enable **Developer mode**.
-   - Select **Load unpacked** and choose the project folder.
-
-3. **Launch** the extension: Once installed, the AllReacts Facebook icon will appear on your browser toolbar.
+2. **Load the Extension:**
+- Open `chrome://extensions/` (Chrome), `about:debugging#/runtime/this-firefox` (Firefox), or `edge://extensions/` (Edge).
+- Enable **Developer Mode** (Chrome/Edge) or click **Load Temporary Add-on** (Firefox).
+- Select **Load Unpacked** (Chrome/Edge) or choose the manifest.json file (Firefox) from the project folder.
+3. **Launch:** Look for the AllReacts icon in your browser toolbar.
 
 ## How to Use
 
-1. Open the Facebook Stories you want to react to.
-2. Click the 'Plus' icon in the bottom corner of the reactions footer.
-<div align="center">
-  <img src="screenshot/shot-1.png" width="400"/>
-</div>
+### Reacting to Stories
+1. Open a Facebook Story.
+2. Click the **Plus** icon in the reactions footer. <p align="center"><img src="screenshot/shot-1.png" width="400"/></p>
+3. Pick your favorite emoji and react!
 
-3. Choose your favorite emoji and react to the Story.
-
-**Hide seen Story**
-
-1. Click the AllReacts for Facebook Stories icon from the Extension.
-<div align="center">
-  <img src="screenshot/shot-2.png" width="400"/>
-</div>
-
-2. Enable/Disable 'Hide the seen status on Facebook Stories'.
+### Hiding "Seen" Status
+1. Click the AllReacts icon in your browser toolbar. <p align="center"><img src="screenshot/shot-2.png" width="400"/></p>
+2. Toggle the **Hide the seen status on Facebook Stories** option.
 
 ## Copyright
-
-© 2024 by Nguyen Trong Duc (DuckCIT). All rights reserved. Feel free to build upon this project, but please give credit to the original author. Your respect for the original work is appreciated.
+© 2024 by Nguyen Trong Duc (DuckCIT). All rights reserved. Feel free to build upon this project, but please credit the original author.
 
 ## Contact
-
-If you have any questions or feedback about the project, please reach out via [Contact Page](https://duckcit.me) or leave a comment on GitHub.
+Questions or feedback? Reach out via the [Contact Page](https://duckcit.me) or leave a comment on [GitHub](https://github.com/DuckCIT/AllReacts-for-Facebook-Stories).
 
 ## License
+This project is licensed under the MIT License. See the  file for details.
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
+## Contributing
+AllReacts is a solo project by Nguyen Trong Duc, built for personal use and shared with the community. As a single developer, I’d love your help to make it even better! You can contribute by:
+- Reporting bugs or suggesting new features on [GitHub Issues](https://github.com/DuckCIT/AllReacts-for-Facebook-Stories/issues).
+- If you're a developer, feel free to fork the repo and submit pull requests.
 ---
-
-I hope AllReacts adds a fun and diverse experience to your Facebook interactions!

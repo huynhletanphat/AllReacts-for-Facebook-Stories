@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.0.6
+- Support for Firefox.
+- Improved method for adding button more accurately.
+- Enhanced UI and interactions.
+- Fixed CSP error.
+- Improved performance.
+
 ## v1.0.5
 - Improved emoji loading performance.
 - Fixed bugs related to emoji reactions.
